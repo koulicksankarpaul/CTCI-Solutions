@@ -155,6 +155,57 @@ public class main {
         return urlified.toString();
     }
 
+    /**
+     * Checks if an input string is a palindrome
+     * @param maybePalindrome the input string
+     * @return true if the input string is a palindrome, false otherwise.
+     */
+    private static boolean checkIfAPalindrome(String maybePalindrome) {
+        StringBuilder reverse = new StringBuilder();
+        for (int i=maybePalindrome.length()-1; i>=0; i--) {
+            reverse.append(maybePalindrome.toLowerCase().charAt(i));
+        }
+        return maybePalindrome.equals(reverse.toString());
+    }
+
+    /**
+     * Checks if an input string is a palindrome
+     * Does in-place checks, and no additional data structure.
+     * @param maybePalindrome the input string
+     * @return true if the input string is a palindrome, false otherwise.
+     */
+    private static boolean checkIfAPalindromeUsingPointers(String maybePalindrome) {
+        int start=0, end=maybePalindrome.length()-1;
+        while (start < end) {
+            if(maybePalindrome.toLowerCase().charAt(start) != maybePalindrome.toLowerCase().charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+        // all the characters matched
+        return true;
+    }
+
+    /**
+     * Checks if the input string is a permutation of a palindrome
+     * e.g.: "Tact coa" has permutations: "taco cat", "atco cta", etc.
+     * @param sentence the input sentence
+     * @return true if the input string is a permutation of a palindrome, false otherwise
+     */
+    private static boolean checkIfPermutePalindrome(String sentence) {
+        HashMap <Character, Integer> map = new HashMap<> ();
+        for (int i = 0; i < sentence.length(); i++) {
+            if(sentence.toLowerCase().charAt(i) != ' ')
+                map.put(sentence.toLowerCase().charAt(i), map.getOrDefault(sentence.toLowerCase().charAt(i), 0) + 1);
+        }
+        int count = 0;
+        for (char key: map.keySet()) {
+            count += map.get(key) % 2;
+        }
+        return count <= 1;
+    }
+
     public static void main(String[] args) {
         String input = "tesla";
         System.out.println("Is input unique? - " + isUniqueUsingInt(input));
@@ -168,5 +219,11 @@ public class main {
 
         String sentence="John Doe  ";
         System.out.println("URLified version is: " + urlify(sentence, 8));
+
+        String maybePalindrome = "ab aa";
+        System.out.println("Is it a palindrome: " + checkIfAPalindrome(maybePalindrome));
+        System.out.println("Is it a palindrome: " + checkIfAPalindromeUsingPointers(maybePalindrome));
+        sentence = "aac cz";
+        System.out.println("Is it a permute palindrome: " + checkIfPermutePalindrome(sentence));
     }
 }
