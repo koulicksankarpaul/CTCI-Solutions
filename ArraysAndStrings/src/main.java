@@ -134,6 +134,27 @@ public class main {
         return true;
     }
 
+    /**
+     * URLifies an input string
+     * @param sentence the input sentence string
+     * @param trueLength the "true" length of the string
+     * @return the urlified version of the string
+     */
+    private static String urlify(String sentence, Integer trueLength) {
+        StringBuilder urlified = new StringBuilder();
+        for (char word:sentence.toCharArray()) {
+            if (trueLength > 0) {
+                if (word == ' ') {
+                    urlified.append("%20");
+                } else {
+                    urlified.append(word);
+                }
+                trueLength--;
+            }
+        }
+        return urlified.toString();
+    }
+
     public static void main(String[] args) {
         String input = "tesla";
         System.out.println("Is input unique? - " + isUniqueUsingInt(input));
@@ -144,5 +165,8 @@ public class main {
         System.out.println(firstInput + " is a permutation of " + secondInput + ": " + isPermutationOf(firstInput, secondInput));
         System.out.println(firstInput + " is a permutation of " + secondInput + ": " + isPermutationOfUsingAsciiValues(firstInput, secondInput));
         System.out.println(firstInput + " is a permutation of " + secondInput + ": " + isPermutationOfUsingHashmap(firstInput, secondInput));
+
+        String sentence="John Doe  ";
+        System.out.println("URLified version is: " + urlify(sentence, 8));
     }
 }
