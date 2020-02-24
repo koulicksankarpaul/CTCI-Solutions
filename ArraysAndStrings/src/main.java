@@ -1,7 +1,4 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class main {
 
@@ -194,7 +191,7 @@ public class main {
      * @return true if the input string is a permutation of a palindrome, false otherwise
      */
     private static boolean checkIfPermutePalindrome(String sentence) {
-        HashMap <Character, Integer> map = new HashMap<> ();
+        Hashtable<Character, Integer> map = new Hashtable<> ();
         for (int i = 0; i < sentence.length(); i++) {
             if(sentence.toLowerCase().charAt(i) != ' ')
                 map.put(sentence.toLowerCase().charAt(i), map.getOrDefault(sentence.toLowerCase().charAt(i), 0) + 1);
@@ -206,6 +203,53 @@ public class main {
         return count <= 1;
     }
 
+    /**
+     * Checks if two input strings are one edit (insert one char/delete one char/replace one char) away
+     * @param firstInput the first input string
+     * @param secondInput the second input string
+     * @return true if two input strings are one edit away, or false otherwise
+     */
+    private static boolean checkIfOneEditAway(String firstInput, String secondInput) {
+        // if both the strings are same, no edits have happened
+        if (firstInput.equals(secondInput))
+            return false;
+        int firstInputLength = firstInput.length();
+        int secondInputLength = secondInput.length();
+
+        // if the length of either input strings is more than 1, return false
+        if ((firstInputLength - secondInputLength) > 1 || (secondInputLength - firstInputLength) > 1)
+            return false;
+
+        int firstInputCounter=0, secondInputCounter=0, countOfEdits=0;
+        while(firstInputCounter < firstInputLength && secondInputCounter < secondInputLength) {
+            // if there is a char mismatch
+            if(firstInput.charAt(firstInputCounter) != secondInput.charAt(secondInputCounter)) {
+                countOfEdits++;
+
+                if(firstInputLength > secondInputLength)
+                    firstInputCounter++;
+                else if (secondInputLength > firstInputLength)
+                    secondInputCounter++;
+                else { // lengths of both the strings are same
+                    firstInputCounter++;
+                    secondInputCounter++;
+                }
+            } else {
+                firstInputCounter++;
+                secondInputCounter++;
+            }
+            if (countOfEdits > 1)
+                return false;
+        }
+        if (firstInputCounter < firstInputLength || secondInputCounter < secondInputLength)
+            countOfEdits++;
+        return countOfEdits == 1;
+    }
+
+    /**
+     * The main/driver method
+     * @param args the array of string arguments
+     */
     public static void main(String[] args) {
         String input = "tesla";
         System.out.println("Is input unique? - " + isUniqueUsingInt(input));
@@ -225,5 +269,9 @@ public class main {
         System.out.println("Is it a palindrome: " + checkIfAPalindromeUsingPointers(maybePalindrome));
         sentence = "aac cz";
         System.out.println("Is it a permute palindrome: " + checkIfPermutePalindrome(sentence));
+
+        firstInput = "abc";
+        secondInput = "abxc";
+        System.out.println("Is it one edit away: " + checkIfOneEditAway(firstInput, secondInput));
     }
 }
