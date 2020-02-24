@@ -205,6 +205,7 @@ public class main {
 
     /**
      * Checks if two input strings are one edit (insert one char/delete one char/replace one char) away
+     * Runtime: O(n)
      * @param firstInput the first input string
      * @param secondInput the second input string
      * @return true if two input strings are one edit away, or false otherwise
